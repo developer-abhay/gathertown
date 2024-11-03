@@ -1,6 +1,7 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import appRouter from './routes/app.router'
+
 dotenv.config()
 
 const app = express()
@@ -8,6 +9,7 @@ const PORT = process.env.PORT || 3000
 
 app.use(express.json())
 app.use('/api/v1', appRouter)
+
 
 
 app.listen(PORT, () => {
