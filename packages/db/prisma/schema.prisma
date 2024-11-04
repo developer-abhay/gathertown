@@ -29,6 +29,7 @@ model Element {
   width         Int
   height        Int
   imageUrl      String
+  static        Boolean         @default(true)
   spaceElements SpaceElements[]
   mapElements   MapElements[]
 }
@@ -36,8 +37,8 @@ model Element {
 model Space {
   id            String          @id @unique @default(cuid())
   name          String
-  width         Int
   height        Int?
+  width         Int
   thumbnail     String?
   users         User[]          @relation("UserSpaces")
   spaceElements SpaceElements[]
@@ -55,9 +56,10 @@ model SpaceElements {
 
 model Map {
   id          String        @id @unique @default(cuid())
-  width       Int
-  height      Int
   name        String
+  height      Int
+  width       Int
+  thumbnail   String
   mapElements MapElements[]
 }
 

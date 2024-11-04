@@ -1,6 +1,6 @@
 import express from 'express'
 import dotenv from 'dotenv'
-import appRouter from './routes/app.router'
+import appRouter from './routes/appV1.router'
 
 dotenv.config()
 
