@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import { signin, signup } from '../controllers/auth'
-import { checkIfUserExists, validateAuthInputs } from '../middlewares/auth'
+import { authenticateUser, checkIfUserExists, validateAuthInputs } from '../middlewares/auth'
+import { getAllAvatars, getAllElements, getAllUsersMetadata, updateUserMetadata } from '../controllers/metadata'
 
 const appRouter = Router()
 
@@ -8,19 +9,14 @@ const appRouter = Router()
 appRouter.post('/signup', validateAuthInputs, checkIfUserExists, signup)
 appRouter.post('/signin', validateAuthInputs, checkIfUserExists, signin)
 
+// Authenticated routes below
+appRouter.use(authenticateUser)
+
 // Extra
-appRouter.post('/user/metadata', (req, res) => {
-    console.log('user metadat')
-})
-appRouter.get('/avatars', (req, res) => {
-    console.log('avatarr')
-})
-appRouter.get('/user/metadata/bulk', (req, res) => {
-    console.log('bulk metadata')
-})
-appRouter.get('/elements', (req, res) => {
-    console.log('Signup')
-})
+appRouter.post('/user/metadata', updateUserMetadata)
+appRouter.get('/user/metadata/bulk', getAllUsersMetadata)
+appRouter.get('/avatars', getAllAvatars)
+appRouter.get('/elements', getAllElements)
 
 
 // Space

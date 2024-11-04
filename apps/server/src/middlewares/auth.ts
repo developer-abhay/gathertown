@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express"
-import bcrypt from 'bcrypt'
 import { findUserByUsername } from "../utils/helper"
 import { CustomRequest } from "../interfaces/types"
+import jwt from "jsonwebtoken"
 
 // Validate middleware while signin and signup
 export const validateAuthInputs = (req: Request, res: Response, next: NextFunction) => {
@@ -31,20 +31,38 @@ export const checkIfUserExists = async (req: CustomRequest, res: Response, next:
     const { username } = req.body;
     const url = req.originalUrl.split('/v1/')[1]
 
-    const user = await findUserByUsername(username)
+    try {
+        const user = await findUserByUsername(username)
 
-    if (url == 'singup' && user) {
-        res.status(409).json({ "error": "User Already Exists" })
-        return;
-    }
-    if (url == 'singin' && !user) {
-        res.status(404).json({ "error": "User not found" })
-        return;
-    }
+        if (url == 'signup' && user) {
+            res.status(409).json({ "error": "User Already Exists" })
+            return;
+        }
+        if (url == 'signin' && !user) {
+            res.status(404).json({ "error": "User not found" })
+            return;
+        }
 
-    if (url == 'singin' && user) {
-        req.user = user
-    }
+        if (url == 'signin' && user) {
+            req.user = user
+        }
 
-    next()
+        next()
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ "error": "Internal Server Error" })
+    }
+}
+
+
+export const authenticateUser = async (req: CustomRequest, res: Response, next: NextFunction) => {
+    const token = req.headers.authorization?.split(' ')[1]
+
+    if (token && process.env.JWT_SECRET) {
+        const user = jwt.verify(token, process.env.JWT_SECRET) as { id: string, role: 'Admin' | "User" }
+        req.user = { id: user.id, role: user.role }
+        next()
+    } else {
+        res.status(401).json({ "error": "Unauthorized" })
+    }
 }

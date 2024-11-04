@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import prisma from "../db/prisma";
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import { findUserByUsername } from "../utils/helper";
 import { CustomRequest } from "../interfaces/types";
 
 export const signup = async (req: Request, res: Response) => {
@@ -22,7 +21,7 @@ export const signup = async (req: Request, res: Response) => {
             }
         })
 
-        res.status(200).json({ id: newUser.id })
+        res.status(200).json({ userId: newUser.id })
     } catch (error) {
         console.log(error)
         res.status(500).json({ "error": "Internal Server Error" })
@@ -35,14 +34,14 @@ export const signin = async (req: CustomRequest, res: Response) => {
     try {
         const user = req.user; // From middleware
 
-        const comparePassword = await bcrypt.compare(password, user!.password)
+        const comparePassword = await bcrypt.compare(password, user!.password!)
 
         if (!comparePassword) {
             res.status(401).json({ "error": "Invalid Credentials" })
             return
         }
 
-        const token = jwt.sign({ id: user!.id }, process.env.JWT_SECRET || '123xyz123')
+        const token = jwt.sign({ id: user!.id, role: user!.role }, process.env.JWT_SECRET || '123xyz123')
 
         res.status(200).json({ token })
     } catch (error) {
