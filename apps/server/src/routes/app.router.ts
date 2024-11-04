@@ -2,6 +2,7 @@ import { Router } from 'express'
 import { signin, signup } from '../controllers/auth'
 import { authenticateUser, checkIfUserExists, validateAuthInputs } from '../middlewares/auth'
 import { getAllAvatars, getAllElements, getAllUsersMetadata, updateUserMetadata } from '../controllers/metadata'
+import { addElementToSpace, createSpace, deleteSpaceById, deleteSpaceElements, getAllSpace, getSpaceById } from '../controllers/space'
 
 const appRouter = Router()
 
@@ -20,24 +21,12 @@ appRouter.get('/elements', getAllElements)
 
 
 // Space
-appRouter.post('/space', (req, res) => {
-    console.log('create space')
-})
-appRouter.delete('/space/:spaceId', (req, res) => {
-    console.log('delete space')
-})
-appRouter.get('/space/all', (req, res) => {
-    console.log('get all space')
-})
-appRouter.get('/space/:spaceId', (req, res) => {
-    console.log('get space by id')
-})
-appRouter.post('/space/element', (req, res) => {
-    console.log('add elements to space')
-})
-appRouter.delete('/space/element', (req, res) => {
-    console.log('delete elements from space')
-})
+appRouter.get('/space/all', getAllSpace)
+appRouter.get('/space/:spaceId', getSpaceById)
+appRouter.post('/space', createSpace)
+appRouter.post('/space/element', addElementToSpace)
+appRouter.delete('/space/element', deleteSpaceElements)
+appRouter.delete('/space/:spaceId', deleteSpaceById)
 
 
 // Admin

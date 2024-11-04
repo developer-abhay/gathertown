@@ -54,7 +54,7 @@ export const checkIfUserExists = async (req: CustomRequest, res: Response, next:
     }
 }
 
-
+// Authenticate from token in authorization header
 export const authenticateUser = async (req: CustomRequest, res: Response, next: NextFunction) => {
     const token = req.headers.authorization?.split(' ')[1]
 

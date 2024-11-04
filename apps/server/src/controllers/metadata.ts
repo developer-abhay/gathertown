@@ -99,7 +99,6 @@ export const getAllUsersMetadata = async (req: Request, res: Response) => {
     }
 }
 
-
 export const getAllAvatars = async (req: Request, res: Response) => {
     try {
         const avatars = await prisma.avatar.findMany()
@@ -109,7 +108,6 @@ export const getAllAvatars = async (req: Request, res: Response) => {
         res.status(500).json({ 'error': "Internal Server Error" })
     }
 }
-
 
 export const getAllElements = async (req: Request, res: Response) => {
     try {
