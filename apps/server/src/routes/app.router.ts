@@ -1,14 +1,12 @@
 import { Router } from 'express'
+import { signin, signup } from '../controllers/auth'
+import { checkIfUserExists, validateAuthInputs } from '../middlewares/auth'
 
 const appRouter = Router()
 
 // Auth
-appRouter.post('/signup', (req, res) => {
-    console.log('Signup')
-})
-appRouter.post('/signin', (req, res) => {
-    console.log('Signin')
-})
+appRouter.post('/signup', validateAuthInputs, checkIfUserExists, signup)
+appRouter.post('/signin', validateAuthInputs, checkIfUserExists, signin)
 
 // Extra
 appRouter.post('/user/metadata', (req, res) => {
