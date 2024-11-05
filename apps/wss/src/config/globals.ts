@@ -1,11 +1,5 @@
-import { WebSocket } from "ws"
+import { SPACE_TYPE, UserType } from "../interfaces/types"
 
-interface SPACE_TYPE {
-    [spaceId: string]: Map<string, WebSocket>
-}
+// Any better way to structure this ?? refer voice
 export const spaces: SPACE_TYPE = {}
-
-
-
-
-export const users: Map<WebSocket, { userId: string, spaceId: string, x: number, y: number }> = new Map()
+export const users: UserType = new Map()
