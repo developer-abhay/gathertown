@@ -1,7 +1,10 @@
+import Space from "./components/Space"
+
 function App() {
+
   return (
     <main className="w-screen h-screen flex justify-center items-center">
-      <canvas className="w-[90%] h-[90%] bg-white" style={{ imageRendering: "pixelated" }}></canvas>
+      <Space />
     </main>
   )
 }
